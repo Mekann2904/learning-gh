@@ -1,3 +1,4 @@
+```zsh
 (base) mekann@MekannMacBook learning/learning-gh $ gp --set-upstream origin main
 branch 'main' set up to track 'origin/main'.
 Everything up-to-date
@@ -31,4 +32,4 @@ accepts 1 arg(s), received 0
 (base) mekann@MekannMacBook learning/learning-gh $ gh issue list
 no open issues in Mekann2904/learning-gh
 (base) mekann@MekannMacBook learning/learning-gh $ gh issue list --state all 
-
+``` 
