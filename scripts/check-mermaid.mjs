@@ -11,8 +11,7 @@ import fg from "fast-glob";
 
 const execFileAsync = promisify(execFile);
 
-const TARGET_DIR = process.argv[2] || "docs";
-const GLOB_PATTERN = [`${TARGET_DIR.replace(/\/+$/, "")}/**/*.{md,mdx}`];
+const ARGS = process.argv.slice(2);
 
 function extractMermaidBlocks(content) {
   const lines = content.split(/\r?\n/);
@@ -74,7 +73,35 @@ async function validateWithMmdc(mermaidCode) {
 }
 
 (async () => {
-  const files = await fg(GLOB_PATTERN, { dot: false, onlyFiles: true });
+  // 引数がなければ docs 配下を全走査
+  let files = [];
+  let displayTarget = "docs";
+  if (ARGS.length === 0) {
+    const TARGET_DIR = "docs";
+    const GLOB_PATTERN = [`${TARGET_DIR.replace(/\/+$/, "")}/**/*.{md,mdx}`];
+    files = await fg(GLOB_PATTERN, { dot: false, onlyFiles: true });
+  } else {
+    // lint-staged からの引数(ファイル/ディレクトリ)を受け取り、
+    // md/mdx ファイルのみに限定
+    const collected = new Set();
+    for (const p of ARGS) {
+      try {
+        const stat = await fs.stat(p);
+        if (stat.isDirectory()) {
+          const list = await fg([
+            `${p.replace(/\/+$/, "")}/**/*.{md,mdx}`,
+          ], { dot: false, onlyFiles: true });
+          for (const f of list) collected.add(f);
+        } else if (stat.isFile()) {
+          if (/\.(md|mdx)$/i.test(p)) collected.add(p);
+        }
+      } catch {
+        // 存在しない/削除済などは無視
+      }
+    }
+    files = [...collected];
+    displayTarget = "inputs";
+  }
   let totalBlocks = 0;
   let errorCount = 0;
   const reports = [];
@@ -96,7 +123,7 @@ async function validateWithMmdc(mermaidCode) {
   }
 
   if (errorCount === 0) {
-    console.log(`Mermaid syntax OK: ${TARGET_DIR} (checked ${totalBlocks} block(s))`);
+    console.log(`Mermaid syntax OK: ${displayTarget} (checked ${totalBlocks} block(s))`);
     process.exit(0);
   } else {
     console.error(`Mermaid syntax errors: ${errorCount} block(s) failed\n`);
@@ -118,4 +145,3 @@ async function validateWithMmdc(mermaidCode) {
   console.error("Validator crashed:", e?.stack || e?.message || e);
   process.exit(2);
 });
-
