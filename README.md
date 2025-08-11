@@ -4,6 +4,8 @@
 
 ## 使い方（入口）
 
+- Docs 目次（MOC）: [docs/README.md](docs/README.md)
+
 - ガイド
   - GitHub（プライベート）と Terraform Cloud の VCS 連携: [docs/guides/github-private-tfc-vcs-integration.md](docs/guides/github-private-tfc-vcs-integration.md)
   - Terraform 構成と技術選定の理由: [docs/guides/terraform-architecture-and-selection.md](docs/guides/terraform-architecture-and-selection.md)
