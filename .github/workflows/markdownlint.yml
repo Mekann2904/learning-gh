@@ -3,10 +3,16 @@ name: markdownlint
 on:
   push:
     branches: [ main ]
-    paths: [ "**/*.md", ".markdownlint.json" ]
+    paths:
+      - "**/*.md"
+      - ".markdownlint.json"
+      - ".markdownlint-cli2.jsonc"
   pull_request:
     branches: [ main ]
-    paths: [ "**/*.md", ".markdownlint.json" ]
+    paths:
+      - "**/*.md"
+      - ".markdownlint.json"
+      - ".markdownlint-cli2.jsonc"
 
 jobs:
   lint:
