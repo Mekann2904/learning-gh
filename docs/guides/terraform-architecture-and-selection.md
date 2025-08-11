@@ -28,7 +28,7 @@ graph LR
   Dev -->|PR作成/更新| GH;
   GH -->|VCSトリガー| TFC;
   TFC -->|Plan/Logs| GH;
-  TFC -->|Apply(承認後)| Cloud;
+  TFC -->|"Apply(承認後)"| Cloud;
   Dev -->|terraform login| TFC;
 ```
 
