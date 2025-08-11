@@ -32,10 +32,8 @@
   "lint-staged": {
     "*.md": [
       "markdownlint-cli2 --fix",
+      "node scripts/check-mermaid.mjs",
       "git add"
-    ],
-    "*.md": [
-      "node scripts/check-mermaid.mjs"
     ]
   }
 }
