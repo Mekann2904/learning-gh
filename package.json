@@ -34,7 +34,7 @@
       "markdownlint-cli2 --fix",
       "git add"
     ],
-    "docs/**/*.{md,mdx}": [
+    "*.md": [
       "node scripts/check-mermaid.mjs"
     ]
   }
