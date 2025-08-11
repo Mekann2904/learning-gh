@@ -1,5 +1,8 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-npx lint-staged
+# 変更対象だけ検証する
+npx --no-install lint-staged
 
+# すべて検証したい場合はこちらに切替（大規模Repoはlint-staged推奨）
+# npm run -s precommit:mermaid
