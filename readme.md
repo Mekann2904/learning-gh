@@ -68,3 +68,8 @@ cp docs/_template.md docs/how-to/<new-doc>.md
 ```
 
 - ファイル名は kebab-case。本文H1は1つ、章立てはテンプレに準拠。
+
+## ユーティリティ
+
+- 目次生成: `scripts/gen_toc.sh <file.md> > TOC.md`（簡易TOCを生成）。GitHubのアンカー仕様と差異が出る場合は手動で微調整する。
+- Lint CI: GitHub ActionsでPR/Push時に`markdownlint-cli2`を実行する。
