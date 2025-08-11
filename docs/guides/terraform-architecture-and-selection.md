@@ -19,17 +19,17 @@
 ## 採用構成（概要）
 
 ```mermaid
-flowchart LR
-  Dev[Developer]
-  GH["GitHub (Private Repo)"]
-  TFC["Terraform Cloud (Workspace)"]
-  Cloud[(Cloud Provider)]
+graph LR
+  Dev[Developer];
+  GH["GitHub (Private Repo)"];
+  TFC["Terraform Cloud (Workspace)"];
+  Cloud["Cloud Provider"];
 
-  Dev -->|PR作成/更新| GH
-  GH -->|VCSトリガー| TFC
-  TFC -->|Plan/Logs| GH
-  TFC -->|Apply(承認後)| Cloud
-  Dev -->|terraform login| TFC
+  Dev -->|PR作成/更新| GH;
+  GH -->|VCSトリガー| TFC;
+  TFC -->|Plan/Logs| GH;
+  TFC -->|Apply(承認後)| Cloud;
+  Dev -->|terraform login| TFC;
 ```
 
 特性
