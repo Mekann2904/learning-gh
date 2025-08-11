@@ -35,9 +35,9 @@
 
 ```mermaid
 sequenceDiagram
-  participant Dev as 開発者ローカル
-  participant GH as GitHub(Private)
-  participant TFC as Terraform Cloud
+  participant Dev as "開発者ローカル"
+  participant GH as "GitHub (Private)"
+  participant TFC as "Terraform Cloud"
   participant Admin as TFC管理者
 
   Admin->>TFC: Org招待・SSO設定・Workspace作成
@@ -68,9 +68,9 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-  participant Dev as 開発者(ローカル)
+  participant Dev as "開発者(ローカル)"
   participant GH as GitHub
-  participant TFC as Terraform Cloud
+  participant TFC as "Terraform Cloud"
   participant Reviewer as レビュワー
   participant Approver as 承認者
 
@@ -175,4 +175,3 @@ flowchart LR
 ## 参考
 
 - 後で公式ドキュメントリンクを追記予定。
-

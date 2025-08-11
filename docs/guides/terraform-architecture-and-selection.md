@@ -21,8 +21,8 @@
 ```mermaid
 flowchart LR
   Dev[Developer]
-  GH[GitHub (Private Repo)]
-  TFC[Terraform Cloud (Workspace)]
+  GH["GitHub (Private Repo)"]
+  TFC["Terraform Cloud (Workspace)"]
   Cloud[(Cloud Provider)]
 
   Dev -->|PR作成/更新| GH
@@ -81,10 +81,10 @@ flowchart LR
 
 ```mermaid
 sequenceDiagram
-  participant GH as GitHub Actions
-  participant IDP as GitHub OIDC Provider
-  participant Cloud as Cloud STS/Token Service
-  participant TFC as Terraform Cloud (実行者)
+  participant GH as "GitHub Actions"
+  participant IDP as "GitHub OIDC Provider"
+  participant Cloud as "Cloud STS/Token Service"
+  participant TFC as "Terraform Cloud (実行者)"
 
   GH->>IDP: OIDCトークン要求
   IDP-->>GH: OIDC IDトークン(JWT)
