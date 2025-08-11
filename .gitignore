@@ -1,0 +1,15 @@
+# Node.js 関連
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ビルド/生成物
+dist/
+build/
+.tmp/
+
+# OSファイル
+.DS_Store
+Thumbs.db
+

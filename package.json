@@ -1,0 +1,32 @@
+{
+  "name": "learning-gh",
+  "version": "1.0.0",
+  "description": "開発まわりの手順・知見を素早く参照できるように整理するドキュメント集である。目的別に「ガイド」「How-to」「運用」に分類する。",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mekann2904/learning-gh.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Mekann2904/learning-gh/issues"
+  },
+  "homepage": "https://github.com/Mekann2904/learning-gh#readme",
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "lint-staged": "^16.1.5"
+  },
+  "lint-staged": {
+  "*.md": ["markdownlint-cli2 --fix", "git add"]
+  }
+}
