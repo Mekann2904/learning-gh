@@ -75,6 +75,56 @@ flowchart LR
 - 状態管理: TFCのstate暗号化/ロックに依存。ローカル保存を禁ずる。
 - 監査性: すべての実行・差分・コメント・承認を記録し、事後追跡を容易にする。
 
+## クラウド別のOIDCベース認証設計
+
+目的: 長期秘密鍵を排し、短期トークンで最小権限を付与する。
+
+```mermaid
+sequenceDiagram
+  participant GH as GitHub Actions
+  participant IDP as GitHub OIDC Provider
+  participant Cloud as Cloud STS/Token Service
+  participant TFC as Terraform Cloud (実行者)
+
+  GH->>IDP: OIDCトークン要求
+  IDP-->>GH: OIDC IDトークン(JWT)
+  GH->>Cloud: IDトークンを提示して一時認証要求
+  Cloud-->>GH: 短期クレデンシャル発行
+  GH->>TFC: Terraform実行時に短期クレデンシャルを使用
+```
+
+共通方針
+- 信頼バインド: リポジトリ/環境/ブランチ等の`aud`/`sub`制約でスコープを限定。
+- IAM最小権限: Plan/Applyに必要な権限を分離し、承認フローと組み合わせる。
+- 秘密非保持: 長期キーを排除。必要に応じてローカルはTFC実行へ委譲。
+
+AWS（GitHub OIDC → STS:AssumeRoleWithWebIdentity）
+- 設計: `identity provider`を作成し、`condition`で`sub`（リポジトリ/環境）を厳格化。`AssumeRolePolicy`で信頼関係を限定。
+- 付与: Terraform用IAMロールに必要最小のポリシーを付与（例: S3, DynamoDB, 各サービス）
+- 参考ポリシー断片（概念）:
+  - Trust policy: `aud: sts.amazonaws.com`かつ`sub: repo:<owner>/<repo>:ref:refs/heads/main` 等
+  - Session duration: 15〜60分（最小）
+
+GCP（Workload Identity Federation）
+- 設計: `Workload Identity Pool`と`Provider`を作成し、`attribute.condition`で`repository`, `ref`を制限。
+- 付与: `Service Account`と`Workload Identity User`ロールを紐付け、必要権限のみ付与。
+- 取得: `gcloud auth workforce/iam`経由で短期クレデンシャルを払い出し。
+
+Azure（Federated Credentials for Service Principal）
+- 設計: Entra IDアプリ（SP）に`federated credential`を追加。`issuer`, `subject`, `audience`でリポジトリ/ブランチを固定。
+- 付与: SPに必要な`Role Assignment`を最小で付与（例: Contributorではなくサービス単位の細分化）。
+- 実行: `az login --federated-token`相当で短期トークンを利用。
+
+比較と利点
+- 長期キー配布/ローテーション不要、漏えい面積を縮小。
+- トークンは短命で、権限は実行コンテキスト（PR/ブランチ）へ限定可能。
+- 監査性が高く、誤用時の影響範囲を限定できる。
+
+注意点
+- 条件式（sub, repository, environment）の厳格化を徹底。ワイルドカード広すぎに注意。
+- ローカル実行を許容する場合も、原則はTFC実行へ委譲し秘密非保持を維持。
+- 役割分離（Plan/Apply）とレビュー/承認プロセスを必ず組み合わせる。
+
 ## 運用フロー（PR駆動）
 
 1. featureブランチで変更を作成
@@ -105,4 +155,3 @@ flowchart LR
 - Terraform Cloud 公式ドキュメント（VCS連携, Workspaces, Variables）
 - Terraform CLI と Remote Backend の設計比較
 - PR駆動インフラ運用（Atlantis, GitHub Actions, TFC）の比較記事
-
