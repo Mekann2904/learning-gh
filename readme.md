@@ -6,6 +6,7 @@
 
 - ガイド
   - GitHub（プライベート）と Terraform Cloud の VCS 連携: [docs/guides/github-private-tfc-vcs-integration.md](docs/guides/github-private-tfc-vcs-integration.md)
+  - Terraform 構成と技術選定の理由: [docs/guides/terraform-architecture-and-selection.md](docs/guides/terraform-architecture-and-selection.md)
 
 - How-to（短手順）
   - oh-my-zsh の Git エイリアス: [docs/how-to/oh-my-zsh.md](docs/how-to/oh-my-zsh.md)
@@ -67,4 +68,3 @@ cp docs/_template.md docs/how-to/<new-doc>.md
 ```
 
 - ファイル名は kebab-case。本文H1は1つ、章立てはテンプレに準拠。
-
