@@ -63,5 +63,4 @@
 
 ## 参考
 
-- oh-my-zsh Git plugin: https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
-
+- oh-my-zsh Git plugin: <https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git>

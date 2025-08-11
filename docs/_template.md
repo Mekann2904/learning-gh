@@ -43,4 +43,3 @@ step 2
 - コードブロックは言語指定（bash, zsh, json, hcl など）。
 - 画像・図には代替テキストを付与する。
 - ファイル名は ASCII の kebab-case。
-

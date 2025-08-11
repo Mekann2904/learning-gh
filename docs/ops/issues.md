@@ -48,5 +48,4 @@ no open issues in Mekann2904/learning-gh
 
 ## 参考
 
-- GitHub CLI docs: https://cli.github.com/manual/gh_issue
-
+- GitHub CLI docs: <https://cli.github.com/manual/gh_issue>

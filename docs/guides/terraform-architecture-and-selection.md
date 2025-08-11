@@ -33,6 +33,7 @@ graph LR
 ```
 
 特性
+
 - VCS連携でPRイベントを起点にPlanを自動実行する。
 - Applyは権限者のみ承認。実行ログと差分はTFCに集約する。
 - 変数/秘密（API鍵等）はTFCのWorkspace/Variable Setに一元管理する。
@@ -94,11 +95,13 @@ sequenceDiagram
 ```
 
 共通方針
+
 - 信頼バインド: リポジトリ/環境/ブランチ等の`aud`/`sub`制約でスコープを限定。
 - IAM最小権限: Plan/Applyに必要な権限を分離し、承認フローと組み合わせる。
 - 秘密非保持: 長期キーを排除。必要に応じてローカルはTFC実行へ委譲。
 
 AWS（GitHub OIDC → STS:AssumeRoleWithWebIdentity）
+
 - 設計: `identity provider`を作成し、`condition`で`sub`（リポジトリ/環境）を厳格化。`AssumeRolePolicy`で信頼関係を限定。
 - 付与: Terraform用IAMロールに必要最小のポリシーを付与（例: S3, DynamoDB, 各サービス）
 - 参考ポリシー断片（概念）:
@@ -106,21 +109,25 @@ AWS（GitHub OIDC → STS:AssumeRoleWithWebIdentity）
   - Session duration: 15〜60分（最小）
 
 GCP（Workload Identity Federation）
+
 - 設計: `Workload Identity Pool`と`Provider`を作成し、`attribute.condition`で`repository`, `ref`を制限。
 - 付与: `Service Account`と`Workload Identity User`ロールを紐付け、必要権限のみ付与。
 - 取得: `gcloud auth workforce/iam`経由で短期クレデンシャルを払い出し。
 
 Azure（Federated Credentials for Service Principal）
+
 - 設計: Entra IDアプリ（SP）に`federated credential`を追加。`issuer`, `subject`, `audience`でリポジトリ/ブランチを固定。
 - 付与: SPに必要な`Role Assignment`を最小で付与（例: Contributorではなくサービス単位の細分化）。
 - 実行: `az login --federated-token`相当で短期トークンを利用。
 
 比較と利点
+
 - 長期キー配布/ローテーション不要、漏えい面積を縮小。
 - トークンは短命で、権限は実行コンテキスト（PR/ブランチ）へ限定可能。
 - 監査性が高く、誤用時の影響範囲を限定できる。
 
 注意点
+
 - 条件式（sub, repository, environment）の厳格化を徹底。ワイルドカード広すぎに注意。
 - ローカル実行を許容する場合も、原則はTFC実行へ委譲し秘密非保持を維持。
 - 役割分離（Plan/Apply）とレビュー/承認プロセスを必ず組み合わせる。
